@@ -30,4 +30,22 @@ app.post("/tasks", async (req, res) => {
     }
 });
 
+app.delete("/tasks/:id", async (req, res) => {
+    try {
+        const taksId = req.params.id;
+
+        const taskToDelete = await TaskModel.findById(taksId);
+
+        if (!taskToDelete) {
+            res.status(500).send("Essa tarefa não foi encontrada.");
+        }
+
+        const deletedTask = await TaskModel.findByIdAndDelete(taksId);
+
+        res.status(200).send(deletedTask);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 app.listen(8000, () => console.log("start server"));
