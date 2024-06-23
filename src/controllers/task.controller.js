@@ -9,9 +9,26 @@ class TaskController {
     async getTasks() {
         try {
             const tasks = await TaskModel.find({});
-            res.status(200).send(tasks);
+            this.res.status(200).send(tasks);
         } catch (error) {
-            return res.status(500).send(error.message);
+            return this.res.status(500).send(error.message);
+        }
+    }
+    async getTasksById() {
+        try {
+            const taskId = this.req.params.id;
+
+            const task = await TaskModel.findById(taskId);
+
+            if (!task) {
+                this.res.status(400).send("Essa tarefa não foi encontrada.");
+            }
+
+            this.res.status(200).send(tasks);
+        } catch (error) {
+            return this.res.status(404).send(error.message);
         }
     }
 }
+
+module.exports = TaskController;
